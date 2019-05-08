@@ -8,23 +8,52 @@
  */
 
 import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View} from 'react-native';
-
-const instructions = Platform.select({
-  ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
-  android:
-    'Double tap R on your keyboard to reload,\n' +
-    'Shake or press menu button for dev menu',
-});
+import { StyleSheet, Text, View, Button } from 'react-native';
+import { fromJS } from 'immutable'
+import { mock } from './mock'
 
 type Props = {};
-export default class App extends Component<Props> {
+type State = {
+  timeElapsed: number,
+  timeElapsed2: number,
+  loading: boolean
+}
+export default class App extends Component<Props, State> {
+  constructor(props: Props) {
+    super(props)
+    this._run = this._run.bind(this)
+    this.state = {
+      timeElapsed: 0,
+      timeElapsed2: 0,
+      loading: false
+    }
+  }
+  _run() {
+    console.log('>>> test by Hays ... ')
+    const now = new Date()
+    const ret = fromJS(mock)
+    const after = new Date()
+    const timeElapsed = after.getTime() - now.getTime()
+    this.setState({
+      timeElapsed
+    }, () => {
+      setTimeout(() => {
+        const begin = new Date()
+        const t = ret.toJS()
+        const end = new Date()
+        const timeElapsed2 = end.getTime() - begin.getTime()
+        this.setState({
+          timeElapsed2
+        })
+      }, 3000)
+    })
+  }
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.welcome}>Welcome to React Native!</Text>
-        <Text style={styles.instructions}>To get started, edit App.js</Text>
-        <Text style={styles.instructions}>{instructions}</Text>
+        <Text>{`fromJS run time elapsed: ${this.state.timeElapsed}`}</Text>
+        <Text>{`toJS run time elapsed: ${this.state.timeElapsed2}`}</Text>
+        <Button title='Run' onPress={this._run} />
       </View>
     );
   }
