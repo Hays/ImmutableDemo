@@ -51,8 +51,8 @@ export default class App extends Component<Props, State> {
   render() {
     return (
       <View style={styles.container}>
-        <Text>{`fromJS run time elapsed: ${this.state.timeElapsed}`}</Text>
-        <Text>{`toJS run time elapsed: ${this.state.timeElapsed2}`}</Text>
+        <Text>{`fromJS run time elapsed: ${this.state.timeElapsed} ms`}</Text>
+        <Text>{`toJS run time elapsed: ${this.state.timeElapsed2} ms`}</Text>
         <Button title='Run' onPress={this._run} />
       </View>
     );
