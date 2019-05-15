@@ -24,9 +24,15 @@ type State = {
   timeElapsed7: number,
   timeElapsed8: number,
   timeElapsed9: number,
-  timeElapsed10: number
+  timeElapsed10: number,
+  timeElapsed11: number,
+  timeElapsed12: number,
+  timeElapsed13: number,
+  timeElapsed14: number,
+  timeElapsed15: number,
 }
 export default class App extends Component<Props, State> {
+  _mockMembers2: Array<any>
   constructor(props: Props) {
     super(props)
     this._run = this._run.bind(this)
@@ -34,6 +40,48 @@ export default class App extends Component<Props, State> {
     this._run3 = this._run3.bind(this)
     this._run4 = this._run4.bind(this)
     this._run5 = this._run5.bind(this)
+    this._run6 = this._run6.bind(this)
+    this._run7 = this._run7.bind(this)
+    this._run8 = this._run8.bind(this)
+    this._mockMembers2 = []
+    for (let i = 0; i < 1212; i++) {
+      this._mockMembers2.push((
+        {
+          "user": {
+            "staffId": null,
+            "avatar": "",
+            "displayName": "董**",
+            "jobTitle": "***",
+            "createTime": 1556452770000,
+            "_id": "49efbfbd-626d-efbf-bd76-4be59a96efbf",
+            "systemId": "49efbfbd-626d-efbf-bd76-4be59a96efbf",
+            "email": "***",
+            "mobile": "185****5511",
+            "department": "***",
+            "company": "***"
+          },
+          "meeting": "010578977201904280001",
+          "repeatMeeting": i,
+          "createTime": (1556452770000 + i),
+          "state": 2,
+          "from": i,
+          "revoker": null,
+          "invitor": {
+            "staffId": null,
+            "avatar": "",
+            "displayName": "刘鹏飞",
+            "jobTitle": "web后台应用软件工程师",
+            "createTime": 1556452770000,
+            "_id": "e449ea73-268f-4817-a16e-9eadbbc1b7ea",
+            "systemId": "e449ea73-268f-4817-a16e-9eadbbc1b7ea",
+            "email": "liupengfei@cvte.com",
+            "mobile": "18578240049",
+            "department": "前端",
+            "company": "广州视臻1602"
+          }
+        }
+      ))
+    }
     this.state = {
       timeElapsed: 0,
       timeElapsed2: 0,
@@ -44,7 +92,12 @@ export default class App extends Component<Props, State> {
       timeElapsed7: 0,
       timeElapsed8: 0,
       timeElapsed9: 0,
-      timeElapsed10: 0
+      timeElapsed10: 0,
+      timeElapsed11: 0,
+      timeElapsed12: 0,
+      timeElapsed13: 0,
+      timeElapsed14: 0,
+      timeElapsed15: 0,
     }
   }
   _run() {
@@ -153,6 +206,85 @@ export default class App extends Component<Props, State> {
       })
     })
   }
+  _run6() {
+    const members = mock.members
+    const members2 = this._mockMembers2
+    const now = new Date()
+    const newMembers = members.map((m, i) => {
+      const ret = { ...m,  ...members2[i] }
+      if (isEqual(m, ret)) {
+        return m
+      } else {
+        return ret
+      }
+    })
+    const after = new Date()
+    const timeElapsed11 = after.getTime() - now.getTime()
+    this.setState({
+      timeElapsed11
+    }, () => {
+      const test = List(members)
+      const begin = new Date()
+      const findIndex = test.find(m => m.user._id === 'efbfbd20-2e16-efbf-bd43-43efbfbdefbf')
+      const newTest = test.update(findIndex, m => {
+        const ret = ({...m, from: 99999})
+        if (isEqual(m, ret)) {
+          return m
+        }
+        return ret
+      })
+      const end = new Date()
+      const timeElapsed12 = end.getTime() - begin.getTime()
+      this.setState({
+        timeElapsed12
+      })
+    })
+  }
+  _run7() {
+    const members = mock.members.map(m => Map(m))
+    let map = Map()
+    members.forEach(m => {
+      map = map.set(m.get('user')._id, m)
+    })
+    const now = new Date()
+    this._mockMembers2.forEach(m => {
+      const member = Map(m)
+      const old = map.get(m.user._id)
+      const from = old.get('from')
+      const createTime = old.get('createTime')
+      map = map.set(m.user._id, member.set('from', from).set('createTime', createTime))
+    })
+    const after = new Date()
+    const timeElapsed13 = after.getTime() - now.getTime()
+    this.setState({
+      timeElapsed13
+    })
+  }
+  _run8() {
+    const members = mock.members.map(m => Map(m))
+    let map = Map()
+    members.forEach(m => {
+      map = map.set(m.get('user')._id, m)
+    })
+    const now = new Date()
+    for (let i = 0; i < 1000; i++) {
+      const old = map.get('efbfbd20-2e16-efbf-bd43-43efbfbdefbf')
+      map = map.set('efbfbd20-2e16-efbf-bd43-43efbfbdefbf', old.set('from', 999))
+    }
+    const after = new Date()
+    const timeElapsed14 = after.getTime() - now.getTime()
+    this.setState({
+      timeElapsed14
+    }, () => {
+      const begin = new Date()
+      const arr = map.toArray()
+      const end = new Date()
+      const timeElapsed15 = end.getTime() - begin.getTime()
+      this.setState({
+        timeElapsed15
+      })
+    })
+  }
   render() {
     return (
       <View style={styles.container}>
@@ -171,6 +303,14 @@ export default class App extends Component<Props, State> {
         <Text>{`object equal check 1212 times time elapsed: ${this.state.timeElapsed9} ms`}</Text>
         <Text>{`Array to Map time elapsed: ${this.state.timeElapsed10} ms`}</Text>
         <Button title='Run5' onPress={this._run5} />
+        <Text>{`object destructure & equal check 1212 times time elapsed: ${this.state.timeElapsed11} ms`}</Text>
+        <Text>{`update list time elapsed: ${this.state.timeElapsed12} ms`}</Text>
+        <Button title='Run6' onPress={this._run6} />
+        <Text>{`Map merge time elapsed: ${this.state.timeElapsed13} ms`}</Text>
+        <Button title='Run7' onPress={this._run7} />
+        <Text>{`Map update time elapsed: ${this.state.timeElapsed14} ms`}</Text>
+        <Text>{`map to array time elapsed: ${this.state.timeElapsed15} ms`}</Text>
+        <Button title='Run7' onPress={this._run8} />
       </View>
     );
   }
